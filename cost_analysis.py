@@ -12,7 +12,7 @@ from hari_client.utils.download import collect_media_and_attributes
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from plot_layout import set_plot_layout
+# from plot_layout import set_plot_layout
 import matplotlib.colors as mcolors
 
 
@@ -880,7 +880,7 @@ if __name__ == "__main__":
                              "Introduced Label Errors [\#]",
                              "Total GT", "Total Pred"]
 
-            plot_params = set_plot_layout(path_to_latex='/usr/local/texlive/2025/bin/universal-darwin')
+            # plot_params = set_plot_layout(path_to_latex='/usr/local/texlive/2025/bin/universal-darwin')
 
             for idx_metric, name in enumerate(names_metrics):
                 print("###" + name + "###")
