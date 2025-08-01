@@ -4,18 +4,13 @@ import os
 import pickle
 import uuid
 from os.path import join
-from pycocotools.coco import COCO
-from pycocotools.cocoeval import COCOeval
+
 from hari_client import Config
 from hari_client import HARIClient
+from hari_client.utils.download import collect_media_and_attributes
+
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.lines as mlines
-from hari_client.models.models import AttributeGroup
-from hari_client.utils.analysis import create_soft_label_for_annotations
-from hari_client.utils.analysis import histograms_for_nanotask
-from hari_client.utils.analysis import organize_attributes_by_group
-from hari_client.utils.download import collect_media_and_attributes
 from tqdm import tqdm
 from plot_layout import set_plot_layout
 import matplotlib.colors as mcolors
@@ -25,15 +20,6 @@ import matplotlib.colors as mcolors
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# import pandas as pd
-
-# # Load the CSV
-# df = pd.read_csv('reliable_jonathan_labels.csv')
-
-# # Convert to dictionary (default: column-oriented)
-# reliable_labels = df.to_dict(orient='records')  # list of row-wise dicts
-# reliable_labels = {entry['media_object_id']:entry for entry in reliable_labels}
-# # print(reliable_labels)
 
 def compute_iou_matrix(gt_boxes, pred_boxes):
     """
@@ -46,11 +32,6 @@ def compute_iou_matrix(gt_boxes, pred_boxes):
 
     gt_boxes = np.array(gt_boxes)
     pred_boxes = np.array(pred_boxes)
-    # DEPRECATED: Convert boxes from x, y, w, h to x1, y1, x2, y2
-    # gt_x1y1 = gt_boxes[:, :2]
-    # gt_x2y2 = gt_x1y1 + gt_boxes[:, 2:]
-    # pred_x1y1 = pred_boxes[:, :2]
-    # pred_x2y2 = pred_x1y1 + pred_boxes[:, 2:]
 
     # Convert boxes from cx, cy, w, h to x1, y1, x2, y2
     gt_x1y1 = gt_boxes[:, :2] - gt_boxes[:, 2:] / 2
@@ -112,9 +93,7 @@ def match_and_count(gt_bboxes,gt_scores, pred_bboxes, pred_scores,iou_thresh):
             continue  # already matched
         matched_gt.add(gt_idx)
         matched_pred.add(pred_idx)
-        # print(gt_idx,  pred_idx, iou)
-        # if 0.4 <= iou <= 0.403:
-        #     print(gt_idx, gt_bboxes[gt_idx], pred_idx, pred_bboxes[pred_idx], iou)
+
         if gt_scores is not None:
             absolute_errors.append(abs(gt_scores[gt_idx] - pred_scores[pred_idx]))
 
@@ -129,13 +108,9 @@ def detect_label_errors(org_gt_bboxes, pred_bboxes, matched_preds,iou_thresh,cos
     label_errors = 0  # debugging variable
     costs = [0.0] * len(pred_bboxes)  # costs to correct label error
 
-    # if len(org_gt_bboxes) == 0:
-    #     # No original gt -> all pred bboxes are can only be valid over overlooked
-    #     return
     if len(pred_bboxes) == 0:
         # No predictions -> just missing, no correction possible
         return label_error_type, costs
-
 
 
     iou_matrix = compute_iou_matrix(org_gt_bboxes, pred_bboxes)
@@ -185,9 +160,6 @@ def detect_label_errorsv2(num_preds, scores, matched_gt, matched_gt_pred, matche
     label_errors_predictions = [""] * num_preds  # To store the type of label error (no, overlooked pedestrian or misfitting box)
     costs = [0.0] * num_preds  # costs to correct label error
 
-    # if len(org_gt_bboxes) == 0:
-    #     # No original gt -> all pred bboxes are can only be valid over overlooked
-    #     return
     if num_preds == 0:
         # No predictions -> just missing, no correction possible
         return label_errors_predictions, costs
