@@ -343,6 +343,9 @@ if __name__ == "__main__":
 
     N = 12
 
+    print(f"Plotting {N} random examples of label errors with small bounding boxes but high soft label probability to "+image_dir)
+
+
     indices = np.random.choice(label_errors.index, size = N, replace = False)
 
     for loop_index in indices:

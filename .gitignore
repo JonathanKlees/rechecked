@@ -1,5 +1,6 @@
 label_error_imgs/
 plots/
+cache_files/
 .env
 __pycache__/
 *.pyc

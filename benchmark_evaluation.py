@@ -207,7 +207,8 @@ if __name__ == "__main__":
     filter_dont_care = False
 
     # paths to the files
-    path_to_predictions = "data/predictions/cascade_rcnn.csv"
+    path_to_predictions = "data/predictions/Cascade R-CNN.csv" # Method to benchmark
+
     path_to_original_gt = "data/original_gt.csv"
     path_to_validated_gt = "data/validated_gt.csv"
     path_to_split = "data/train_val_split.json"  # normally not needed but for safety, we filter the predictions by the val. split if the user provided predictions for all images
