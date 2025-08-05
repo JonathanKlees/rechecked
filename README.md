@@ -14,4 +14,6 @@ Make sure to change the path to your csv file in the benchmark_evaluation.py scr
 TODO[add url to codabench benchmark platform]
 
 ## Cost analysis
-TODO
+The main evaluation of our work is done in cost_analysis.py. 
+We provide the necessary files for this procedure in data/predictions/all_predictions.pkl.
+The script will run the evaluation procedure for the label error detection methods considered as well as for the different annotation strategies. Figures will be stored under plots/.
