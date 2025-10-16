@@ -209,6 +209,8 @@ if __name__ == "__main__":
     # paths to the files
     path_to_predictions = "data/predictions/Cascade R-CNN.csv" # Method to benchmark
 
+    print("Benchmarking "+ path_to_predictions.split("/")[-1].split(".csv")[0] + "... (change method in l. 210)" )
+
     path_to_original_gt = "data/original_gt.csv"
     path_to_validated_gt = "data/validated_gt.csv"
     path_to_split = "data/train_val_split.json"  # normally not needed but for safety, we filter the predictions by the val. split if the user provided predictions for all images
