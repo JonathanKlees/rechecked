@@ -4,13 +4,13 @@ This repository contains validated pedestrian annotations for a subset of the KI
 
 ## Comparing original and validated Annotations
 To determine the number of label errors, we compare the original annotations with the validated ones. Here, different data configurations are considered regarding object size, consideration of don't care regions as well as the soft label probability threshold for the validated annotations.
-Call the script compare_annotations.py, it will prompt you for three inputs -- the soft label probability threshold, a minimal pixel height of objects to consider and whether to consider objects within don't care regions. To recreate the results of our paper, run the script compile_table.py, which calls the compare_annotations.py script with all parameter combinations we evaluated.
+Call the script compare_annotations.py, it will prompt you for three inputs -- the soft label probability threshold, a minimal pixel height of objects to consider and whether to consider objects within don't care regions. To recreate the results of our paper, first make sure to run the process_kitty.py script which requires the path to the locally stored KITTI annotations and converts them to a .csv file containing only pedestrian annotations for the validation split. Then, run the script compile_table.py, which calls the compare_annotations.py script with the parameter combinations we evaluated and prints the resulting table.
 
-Images of the identified label errors can be generated with python plot_label_errors.py. Crops around missing or inaccurate annotations are then stored under label_error_imgs/
+Images of the identified label errors can be generated with python plot_label_errors.py. Crops around missing or inaccurate annotations are then stored under a newly created directory label_error_imgs/. To save space, we only generated a subsample of label errors, which can be changed if desired.
 
 ## Benchmarking label error detection methods
 Evaluate the performance of label error detection methods on our benchmark using the script benchmark_evaluation.py. Make sure to add the predictions of your method as a csv file with the columns [filename, xmin, ymin, xmax, ymax, score] where the filename column corresponds to the KITTI image filenames (e.g. 000123.png) and the score column should contain the scores of your method that indicate the likelihood of this prediction representing a label error (e.g. the probability for the class pedestrian).
-Make sure to change the path to your csv file in the benchmark_evaluation.py script. Also note that predictions need only be made for the validation subset specified by the train_val_split.json.
+Make sure to change the path to your csv file in l.210 the benchmark_evaluation.py script. Also note that predictions need only be made for the validation subset specified by the train_val_split.json in the data directory.
 TODO[add url to codabench benchmark platform]
 
 ## Cost analysis
