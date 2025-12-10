@@ -1,0 +1,8 @@
+label_error_imgs/
+data/original_gt.csv
+data/original_gt_dont_care_regions.csv
+plots/
+cache_files/
+.env
+__pycache__/
+*.pyc
